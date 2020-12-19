@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <math.h>
 #include "vec2d.h"
 
@@ -146,13 +147,13 @@ void vector_mult_v(Vector2d *v1, Vector2d *v2) {
 }
 
 void vector_div_s(Vector2d *v, double num) {
-	(double)v->x /= num;
-	(double)v->y /= num;
+	v->x /= (double)num;
+	v->y /= (double)num;
 }
 
 void vector_div_v(Vector2d *v1, Vector2d *v2) {
-	(double)v1->x /= v2->x;
-	(double)v1->y /= v2->y;
+	v1->x /= (double)v2->x;
+	v1->y /= (double)v2->y;
 }
 
 double vector_angle_between(Vector2d *v1, Vector2d *v2) {
