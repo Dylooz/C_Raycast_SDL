@@ -85,7 +85,7 @@ Vector2d s_vector_rotate(Vector2d v, double angle) {
 
 
 Vector2d *vector_create(double x, double y) {
-	Vector2d *v = malloc(sizeof(v));
+	Vector2d *v = (Vector2d *)malloc(sizeof(v));
 
 	if (v == NULL) return NULL;
 
@@ -96,7 +96,7 @@ Vector2d *vector_create(double x, double y) {
 }
 
 Vector2d *vector_from_mag_angle(double mag, double angle) {
-	Vector2d *v = malloc(sizeof(v));
+	Vector2d *v = (Vector2d *)malloc(sizeof(v));
 
 	if (v == NULL) return NULL;
 
