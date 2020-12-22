@@ -36,8 +36,6 @@ int main(int argc, char **argv) {
 
 
 int init(SDL_Window *window, SDL_Surface *surface) {
-
-	printf("init\n");
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
 	 	SDL_Log("Unable to initialize SDL: %s\n", SDL_GetError());
         return 1;
@@ -54,6 +52,8 @@ int init(SDL_Window *window, SDL_Surface *surface) {
     			return 3;
     		}
     	}
+    	SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 0xFF, 0xFF, 0xFF));
+    	SDL_UpdateWindowSurface(window);
     }
     return 0;
 }
@@ -61,12 +61,14 @@ int init(SDL_Window *window, SDL_Surface *surface) {
 
 int mainLoop(SDL_Window *window, SDL_Surface *surface) {
 	bool quit = FALSE;
+	printf("%d\n", SDL_QUIT);
 
-	/*while (!quit) {
+	while (!quit) {
 		
 		SDL_Event *e;
 		while (SDL_PollEvent(e) != 0) {
-			switch(e->type) {
+			printf("Event Pending: %d\n", e->type);
+			switch (e->type) {
 				case SDL_QUIT:
 					quit = TRUE;
 					break;
@@ -78,7 +80,7 @@ int mainLoop(SDL_Window *window, SDL_Surface *surface) {
 
 		if (quit) break;
 
-	}*/
+	}
 
 	return 0;
 

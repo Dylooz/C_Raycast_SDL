@@ -15,4 +15,7 @@ $(TARGET): $(OBJS)
 clean:
 	rm -rf $(TARGET) *.o
 
+debug: $(TARGET)
+	gdb --quiet -ex run -ex quit $(TARGET)
+
 .PHONY: all clean
