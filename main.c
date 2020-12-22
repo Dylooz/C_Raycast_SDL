@@ -67,7 +67,6 @@ int mainLoop(SDL_Window *window, SDL_Surface *surface) {
 		
 		SDL_Event *e;
 		while (SDL_PollEvent(e) != 0) {
-			printf("Event Pending: %d\n", e->type);
 			switch (e->type) {
 				case SDL_QUIT:
 					quit = TRUE;
