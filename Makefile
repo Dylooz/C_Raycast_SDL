@@ -1,6 +1,6 @@
 CC := gcc
 CFLAGS := -Wall -g
-LDFLAGS := -lm
+LDFLAGS := -lm -lSDL2
 TARGET := main
 
 SRCS := $(wildcard *.c)
