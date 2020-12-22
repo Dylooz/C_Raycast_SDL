@@ -1,5 +1,5 @@
 CC := gcc
-CFLAGS := -Wall -g
+CFLAGS := -Wall -g -I/home/dylooz04/C/headers/
 LDFLAGS := -lm -lSDL2
 TARGET := main
 
