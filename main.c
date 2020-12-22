@@ -17,7 +17,7 @@ int main(int argc, char **argv) {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
 	 	SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
         return 1;
-    } else if (SDL_WasInit(SDL_INIT_EVERYTHING) == 0) {
+    } else {
     	if ((window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN)) == NULL) {
     		SDL_Log("Unable to create Window: %s", SDL_GetError());
     		SDL_Quit();
@@ -31,6 +31,8 @@ int main(int argc, char **argv) {
     		}
             SDL_FillRect(screenSurface, NULL, SDL_MapRGB(screenSurface->format, 0xFF, 0xFF, 0xFF));
             SDL_UpdateWindowSurface(window);
+
+            SDL_Delay(2000);
 
     	}
     }
