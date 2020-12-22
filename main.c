@@ -37,6 +37,7 @@ int main(int argc, char **argv) {
 
 int init(SDL_Window *window, SDL_Surface *surface) {
 
+	printf("init\n");
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
 	 	SDL_Log("Unable to initialize SDL: %s\n", SDL_GetError());
         return 1;
