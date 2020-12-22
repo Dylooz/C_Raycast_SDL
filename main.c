@@ -9,8 +9,8 @@
 #include "vec2d.h"
 
 #define WINDOW_TITLE "Raycasting in C with SDL"
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 800
+#define SCREEN_WIDTH 400
+#define SCREEN_HEIGHT 400
 
 int init(SDL_Window *window, SDL_Surface *surface);
 int mainLoop(SDL_Window *window, SDL_Surface *surface);
@@ -25,8 +25,10 @@ int main(int argc, char **argv) {
 	int err;
 
 	if ((err = init(window, surface)) != 0) return err; 
+	printf("%p\n%p\n", window, surface);
 
 	if ((err = mainLoop(window, surface)) != 0) return err;
+	printf("%p\n%p\n", window, surface);
 
     endall(window, surface);
 
@@ -45,6 +47,7 @@ int init(SDL_Window *window, SDL_Surface *surface) {
     		SDL_Quit();
     		return 2;
     	} else {
+    		printf("%p\n", window);
     		if ((surface = SDL_GetWindowSurface(window)) == NULL) {
     			SDL_Log("Unable to fetch Window Surface: %s\n", SDL_GetError());
     			SDL_DestroyWindow(window);
@@ -61,7 +64,6 @@ int init(SDL_Window *window, SDL_Surface *surface) {
 
 int mainLoop(SDL_Window *window, SDL_Surface *surface) {
 	bool quit = FALSE;
-	printf("%d\n", SDL_QUIT);
 
 	while (!quit) {
 		
@@ -87,6 +89,7 @@ int mainLoop(SDL_Window *window, SDL_Surface *surface) {
 
 
 void endall(SDL_Window *window, SDL_Surface *surface) {
+	printf("B\n");
 	
 	SDL_DestroyWindow(window);
 	window = NULL;
