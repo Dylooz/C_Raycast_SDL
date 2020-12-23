@@ -85,6 +85,11 @@ int mainLoop(SDL_Window *window, SDL_Renderer *renderer, Wall **walls) {
 
 	bool quit = FALSE;
 	int f = 0, x = 0;
+	enum RenderModes {
+		RM_2D,
+		RM_3D
+	} renderMode = RM_2D;
+
 	while (!quit) {
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		SDL_RenderFillRect(renderer, NULL);
@@ -96,6 +101,19 @@ int mainLoop(SDL_Window *window, SDL_Renderer *renderer, Wall **walls) {
 				case SDL_QUIT:
 					quit = TRUE;
 					break;
+				
+				case SDL_KEYDOWN:
+				
+					switch (e.key.keysym.sym) {
+						case SDLK_f:
+							renderMode = !renderMode;
+							break;
+				
+						default:
+							break;
+
+					}
+					break;
 				default:
 					break;
 			}
@@ -106,10 +124,14 @@ int mainLoop(SDL_Window *window, SDL_Renderer *renderer, Wall **walls) {
 		//PROCESS STATE
 
 		//UPDATE SCREEN
-		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-		for (Wall **w = walls; *w; w++) {
-			Wall *wall = *w;
-			SDL_RenderDrawLine(renderer, wall->start->x, wall->start->y, wall->end->x, wall->end->y);
+		if (renderMode == RM_2D) {
+			SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+			for (Wall **w = walls; *w; w++) {
+				Wall *wall = *w;
+				SDL_RenderDrawLine(renderer, wall->start->x, wall->start->y, wall->end->x, wall->end->y);
+			}
+		} else if (renderMode == RM_3D) {
+			
 		}
     	SDL_RenderPresent(renderer);
     	SDL_Delay(1 / FRAMERATE);
