@@ -18,10 +18,10 @@ typedef struct {
 	Vector2d *end;
 } Wall;
 
-int init(SDL_Window **window, SDL_Surface **surface);
-int mainLoop(SDL_Window *window, SDL_Surface *surface);
+int init(SDL_Window **window, SDL_Renderer **renderer);
+int mainLoop(SDL_Window *window, SDL_Renderer *renderer, Wall **walls);
 
-void cleanup(SDL_Window *window, SDL_Surface *surface);
+void cleanup(SDL_Window *window, SDL_Renderer *renderer);
 
 void drawScreen(SDL_Surface *surface, int x, int y, int w, int h, uint8_t colour);
 
@@ -47,18 +47,18 @@ int main(int argc, char **argv) {
 	
 	//DECLARE VARIABLES
 	SDL_Window *window = NULL;
-	SDL_Surface *surface = NULL;
+	SDL_Renderer *renderer = NULL;
 
 	int err;
 
 	//RUN INIT FUNCTION
-	if ((err = init(&window, &surface)) != 0) return err;
+	if ((err = init(&window, &renderer)) != 0) return err;
 
 	//RUN THE MAINLOOP
-	err = mainLoop(window, surface);
+	err = mainLoop(window, renderer, walls);
 
 	//CLEAN UP
-    cleanup(window, surface);
+    cleanup(window, renderer);
 
 
     //ERR != 0 ON ERROR
@@ -66,36 +66,28 @@ int main(int argc, char **argv) {
 
 }
 
-int init(SDL_Window **window, SDL_Surface **surface) {
+int init(SDL_Window **window, SDL_Renderer **renderer) {
 	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
 	 	SDL_Log("Unable to initialize SDL: %s\n", SDL_GetError());
         return -1;
     } else {
-    	if ((*window = SDL_CreateWindow(WINDOW_TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN)) == NULL) {
+        if (SDL_CreateWindowAndRenderer(SCREEN_WIDTH, SCREEN_HEIGHT, 0, window, renderer) != 0) {
     		SDL_Log("Unable to create Window: %s\n", SDL_GetError());
     		SDL_Quit();
     		return -2;
-    	} else {
-    		if ((*surface = SDL_GetWindowSurface(*window)) == NULL) {
-    			SDL_Log("Unable to fetch Window Surface: %s\n", SDL_GetError());
-    			SDL_DestroyWindow(*window);
-    			SDL_Quit();
-    			return -3;
-    		}
     	}    	
     }
     return 0;
 }
 
 
-int mainLoop(SDL_Window *window, SDL_Surface *surface) {
-
-	Wall **walls;
+int mainLoop(SDL_Window *window, SDL_Renderer *renderer, Wall **walls) {
 
 	bool quit = FALSE;
-
+	int f = 0, x = 0;
 	while (!quit) {
-		SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 0xFF, 0xFF, 0xFF));
+		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+		SDL_RenderFillRect(renderer, NULL);
 		
 		// DISPATCH EVENTS
 		SDL_Event e;
@@ -114,9 +106,15 @@ int mainLoop(SDL_Window *window, SDL_Surface *surface) {
 		//PROCESS STATE
 
 		//UPDATE SCREEN
-		drawScreen(surface, 0, 0, 50, 50, 128);
-    	SDL_UpdateWindowSurface(window);
+		SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+		for (Wall **w = walls; *w; w++) {
+			Wall *wall = *w;
+			SDL_RenderDrawLine(renderer, wall->start->x, wall->start->y, wall->end->x, wall->end->y);
+		}
+    	SDL_RenderPresent(renderer);
     	SDL_Delay(1 / FRAMERATE);
+
+    	f++;
 
 	}
 
@@ -125,12 +123,13 @@ int mainLoop(SDL_Window *window, SDL_Surface *surface) {
 }
 
 
-void cleanup(SDL_Window *window, SDL_Surface *surface) {
+void cleanup(SDL_Window *window, SDL_Renderer *renderer) {
 	
+	SDL_DestroyRenderer(renderer);
+	renderer = NULL;
+
 	SDL_DestroyWindow(window);
 	window = NULL;
-	
-	surface = NULL;
 
 	SDL_Quit();
 }
