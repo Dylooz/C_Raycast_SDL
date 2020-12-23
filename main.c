@@ -95,8 +95,7 @@ int mainLoop(SDL_Window *window, SDL_Surface *surface) {
 	bool quit = FALSE;
 
 	while (!quit) {
-		//SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 0xFF, 0xFF, 0xFF));
-    	SDL_UpdateWindowSurface(window);
+		SDL_FillRect(surface, NULL, SDL_MapRGB(surface->format, 0xFF, 0xFF, 0xFF));
 		
 		// DISPATCH EVENTS
 		SDL_Event e;
